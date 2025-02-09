@@ -7,12 +7,24 @@ const WordEntry = () => {
   const handleSubmit = async () => {
     try {
       
-      const response = await fetch(`http://localhost:8000/entry/${word}`);
-      const data = await response.json();
-      setScore(data.score);
-    } catch (error) {
-      console.error('Error fetching entry:', error);
-    }
+    //   const response = await fetch(`http://localhost:8000/entry/${word}`);
+    //   const data = await response.json();
+    //   setScore(data.score);
+    // } catch (error) {
+    //   console.error('Error fetching entry:', error);
+    // }
+    const response = await fetch(`http://localhost:8000/entry`,{
+      method: 'POST',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({ word: word })
+    });
+    const data = await response.json();
+    setScore(data.score);
+  } catch (error) {
+    console.error('Error fetching entry:', error);
+  }
   };
 
   return (

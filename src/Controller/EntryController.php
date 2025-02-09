@@ -44,5 +44,28 @@ final class EntryController extends AbstractController
         return $this->json(['score' => $score]);
     }
 
+    #[Route('/entry')]
+    public function snow(Request $request, EntryRepository $repository): JsonResponse
+    {
+        
+        $data = json_decode($request->getContent(), true);
+        $word = $data['word'] ?? ''; 
+
+        
+        if (empty($word)) {
+            return $this->json(['score' => 0, 'message' => 'No word provided'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $entry = $repository->countWordsCaseInsensitive($word);
+
+        $score = 0;
+
+        if ($entry > 0) {
+            $score = $this->scoreService->calculateScore($word);
+        }
+
+        return $this->json(['score' => $score]);
+    }
+
     
 }
