@@ -20,32 +20,10 @@ final class EntryController extends AbstractController
         $this->scoreService = $scoreService;
     }
 
-    #[Route('/entry', name: 'entry_index', methods: ['GET'])]
-    public function index(EntryRepository $repository): Response
-    {
-        $entry = $repository->countWordsCaseInsensitive('TaBle');
-        dump($entry);
-        return $this->render('entry/index.html.twig', [
-            'controller_name' => 'EntryController',
-        ]);
-    }
-    #[Route('/entry/{word}')]
-    public function show($word, EntryRepository $repository): JsonResponse
-    {
-        $entry = $repository->countWordsCaseInsensitive($word);
+    
 
-        $score = 0;
-
-        if($entry>0)
-        {
-            $score = $this->scoreService->calculateScore($word);
-        }
-
-        return $this->json(['score' => $score]);
-    }
-
-    #[Route('/entry')]
-    public function snow(Request $request, EntryRepository $repository): JsonResponse
+    #[Route('/entry', methods:['POST'])]
+    public function show(Request $request, EntryRepository $repository): JsonResponse
     {
         
         $data = json_decode($request->getContent(), true);

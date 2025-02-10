@@ -42,9 +42,9 @@ class GetScoreCommand extends Command
         $question = new Question('Please enter a word: ', '');
 
         $word = $helper->ask($input, $output, $question);
-
-        if (empty($word)) {
-            $$output->writeln("No word provided");
+        
+        if ($word === "") {
+            $output->writeln("No word provided");
             return Command::FAILURE;
         }
 
